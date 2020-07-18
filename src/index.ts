@@ -11,7 +11,10 @@ const createWindow = (): void => {
     width: 800,
   });
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  mainWindow.webContents.openDevTools();
+
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 app.on('ready', createWindow);

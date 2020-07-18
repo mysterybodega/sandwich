@@ -1,8 +1,8 @@
 {
   "name": "sandwich",
-  "productName": "sandwich",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "Sandwich Beta",
+  "version": "0.1.0",
+  "description": "...",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -87,6 +87,7 @@
     "@types/react-dom": "^16.9.8",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-dropzone-component": "^3.2.0"
   }
 }
