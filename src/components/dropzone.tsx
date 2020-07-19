@@ -2,24 +2,34 @@ import 'dropzone/dist/min/dropzone.min.css';
 import 'react-dropzone-component/styles/filepicker.css';
 
 import React from 'react';
-import { DropzoneComponent } from 'react-dropzone-component';
+import { DropzoneComponent, DropzoneComponentProps } from 'react-dropzone-component';
 
-export class Dropzone extends React.Component {
+export interface DropzoneFile extends File {
+  dataURL: string,
+  upload: {
+    uuid: string
+  }
+}
+
+export class Dropzone extends React.Component<DropzoneComponentProps, DropzoneComponentProps> {
+  constructor(props: DropzoneComponentProps) {
+    super(props);
+    this.state = {
+      config: {
+        postUrl: 'no-url'
+      },
+      djsConfig: {
+        autoProcessQueue: false
+      }
+    }
+  }
+
   render(): React.ReactElement {
-    const config = {
-      iconFiletypes: ['.jpg', '.png', '.pdf'],
-      showFiletypeIcon: true,
-      postUrl: 'no-url'
-    };
-    const djsConfig = {
-      autoProcessQueue: false
-    };
-    const eventHandlers = {
-      addedfile: console.log
-    };
-
     return (
-      <DropzoneComponent config={config} djsConfig={djsConfig} eventHandlers={eventHandlers} />
+      <DropzoneComponent
+        config={this.state.config}
+        djsConfig={this.state.djsConfig}
+        eventHandlers={this.props.eventHandlers} />
     );
   }
 }

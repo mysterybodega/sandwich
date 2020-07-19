@@ -1,35 +1,55 @@
 import React from 'react';
+import { DropzoneFile } from './dropzone';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
 
-const _SortableItem = SortableElement(
-  (element: { value: string }) => <li>{element.value}</li>
-);
+export type SortEndHandler = (sort: { oldIndex: number, newIndex: number }) => void;
 
-const _SortableList = SortableContainer((container: { items: string[] }) => {
+interface SortableListProps {
+  items: DropzoneFile[],
+  onSortEnd: SortEndHandler
+}
+
+interface SortableListState {
+  items: DropzoneFile[]
+}
+
+const _SortableItem = SortableElement((element: { value: DropzoneFile }) => {
+  const file = element.value;
+
+  return (
+    <li>
+      <pre>name: {file.name}</pre>
+      <pre>path: {file.path}</pre>
+      <pre>type: {file.type}</pre>
+      <pre>uuid: {file.upload.uuid}</pre>
+    </li>
+  );
+});
+
+const _SortableList = SortableContainer((state: SortableListState) => {
   return (
     <ul>
-      {container.items.map((value, index) => (
-        <_SortableItem key={`item-${value}`} index={index} value={value} />
+      {state.items.map((file, index) => (
+        <_SortableItem
+          key={file.upload.uuid}
+          index={index}
+          value={file} />
       ))}
     </ul>
   );
 });
 
-export class SortableList extends React.Component {
-  state = {
-    items: ['A', 'B', 'C']
-  };
-
-  onSortEnd = (item: { oldIndex: number, newIndex: number }): void => {
-    this.setState((state: { items: string[] }) => ({
-      items: arrayMove(state.items, item.oldIndex, item.newIndex),
-    }));
-  };
+export class SortableList extends React.Component<SortableListProps, SortableListState> {
+  constructor(props: SortableListProps) {
+    super(props);
+    this.state = {
+      items: props.items
+    };
+  }
 
   render(): React.ReactElement {
-    return (
-      <_SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
-    );
+    return <_SortableList items={this.props.items} onSortEnd={this.props.onSortEnd} />;
   }
 }
+
+export { arrayMove } from 'react-sortable-hoc';

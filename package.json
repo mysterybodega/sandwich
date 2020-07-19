@@ -1,5 +1,5 @@
 {
-  "name": "sandwich",
+  "name": "sandwich-beta",
   "productName": "Sandwich Beta",
   "version": "0.1.0",
   "description": "...",
@@ -88,9 +88,11 @@
     "@types/react-sortable-hoc": "^0.7.1",
     "array-move": "^3.0.0",
     "electron-squirrel-startup": "^1.0.0",
+    "prop-types": "^15.5.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone-component": "^3.2.0",
-    "react-sortable-hoc": "^1.11.0"
+    "react-sortable-hoc": "^1.11.0",
+    "webpack": "^4.0.0"
   }
 }
