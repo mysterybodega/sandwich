@@ -11,7 +11,7 @@ export interface DropzoneFile extends File {
   }
 }
 
-export class Dropzone extends React.Component<DropzoneComponentProps, DropzoneComponentProps> {
+export class SandwichDropzoneComponent extends React.Component<DropzoneComponentProps, DropzoneComponentProps> {
   constructor(props: DropzoneComponentProps) {
     super(props);
     this.state = {

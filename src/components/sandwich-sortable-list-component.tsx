@@ -1,19 +1,16 @@
 import React from 'react';
-import { DropzoneFile } from './dropzone';
+import { DropzoneFile } from './sandwich-dropzone-component';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-
-export type SortEndHandler = (sort: { oldIndex: number, newIndex: number }) => void;
-
-interface SortableListProps {
-  items: DropzoneFile[],
-  onSortEnd: SortEndHandler
-}
 
 interface SortableListState {
   items: DropzoneFile[]
 }
 
-const _SortableItem = SortableElement((element: { value: DropzoneFile }) => {
+interface SortableListProps extends SortableListState {
+  onSortEnd: (sort: { oldIndex: number, newIndex: number }) => void
+}
+
+const SortableItem = SortableElement((element: { value: DropzoneFile }) => {
   const file = element.value;
 
   return (
@@ -26,11 +23,11 @@ const _SortableItem = SortableElement((element: { value: DropzoneFile }) => {
   );
 });
 
-const _SortableList = SortableContainer((state: SortableListState) => {
+const SortableList = SortableContainer((state: SortableListState) => {
   return (
     <ul>
       {state.items.map((file, index) => (
-        <_SortableItem
+        <SortableItem
           key={file.upload.uuid}
           index={index}
           value={file} />
@@ -39,7 +36,7 @@ const _SortableList = SortableContainer((state: SortableListState) => {
   );
 });
 
-export class SortableList extends React.Component<SortableListProps, SortableListState> {
+export class SandwichSortableListComponent extends React.Component<SortableListProps, SortableListState> {
   constructor(props: SortableListProps) {
     super(props);
     this.state = {
@@ -48,7 +45,7 @@ export class SortableList extends React.Component<SortableListProps, SortableLis
   }
 
   render(): React.ReactElement {
-    return <_SortableList items={this.props.items} onSortEnd={this.props.onSortEnd} />;
+    return <SortableList items={this.props.items} onSortEnd={this.props.onSortEnd} />;
   }
 }
 

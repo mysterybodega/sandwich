@@ -1,10 +1,11 @@
 import './stylesheets/app.css';
 
 import React from 'react';
-import { Dropzone, DropzoneFile } from './components/dropzone';
-import { SortableList, SortEndHandler, arrayMove } from './components/sortable-list';
+import { SandwichDropzoneComponent, DropzoneFile } from './components/sandwich-dropzone-component';
+import { SandwichSortableListComponent, arrayMove } from './components/sandwich-sortable-list-component';
 
 interface AppProps {}
+
 interface AppState {
   files: DropzoneFile[]
 }
@@ -17,7 +18,7 @@ class App extends React.Component<AppProps, AppState> {
     };
   }
 
-  onSortEnd: SortEndHandler = (sort) => {
+  onSortEnd = (sort: { oldIndex: number, newIndex: number }): void => {
     this.setState({
       files: arrayMove(this.state.files, sort.oldIndex, sort.newIndex)
     });
@@ -35,9 +36,9 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <div>
         <h1>Sandwich Beta</h1>
-        <Dropzone eventHandlers={eventHandlers} />
+        <SandwichDropzoneComponent eventHandlers={eventHandlers} />
         <h2>Sort</h2>
-        <SortableList items={this.state.files} onSortEnd={this.onSortEnd} />
+        <SandwichSortableListComponent items={this.state.files} onSortEnd={this.onSortEnd} />
         <button>Sandwich PDF</button>
       </div>
     );
