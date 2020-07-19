@@ -51,7 +51,7 @@
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
                 {
-                  "html": "./src/index.html",
+                  "html": "./src/views/index.html",
                   "js": "./src/renderer.tsx",
                   "name": "main_window"
                 }
@@ -85,6 +85,8 @@
   "dependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "@types/react-sortable-hoc": "^0.7.1",
+    "array-move": "^3.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

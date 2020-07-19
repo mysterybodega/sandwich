@@ -1,28 +1,22 @@
+import './stylesheets/app.css';
+
 import React from 'react';
-import { DropzoneComponent } from 'react-dropzone-component';
+import { Dropzone } from './components/dropzone';
+import { SortableList } from './components/sortable-list';
 
 export class App extends React.Component {
   render(): React.ReactElement {
-    const config = {
-      iconFiletypes: ['.jpg', '.png', '.pdf'],
-      showFiletypeIcon: true,
-      postUrl: 'no-url'
-    };
-    const djsConfig = {
-      autoProcessQueue: false
-    };
-    const eventHandlers = {
-      addedfile: console.log
-    };
-
     return (
-      <section>
+      <div>
         <h1>Sandwich Beta</h1>
-        <DropzoneComponent
-          config={config}
-          djsConfig={djsConfig}
-          eventHandlers={eventHandlers}/>
-      </section>
+
+        <Dropzone />
+
+        <h2>Sort</h2>
+        <SortableList />
+
+        <button>Sandwich</button>
+      </div>
     );
   }
 }
