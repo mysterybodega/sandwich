@@ -10,6 +10,7 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
   });
+
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   if (!app.isPackaged) {
