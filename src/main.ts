@@ -7,8 +7,11 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
-    height: 600,
+    height: 800,
     width: 800,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);

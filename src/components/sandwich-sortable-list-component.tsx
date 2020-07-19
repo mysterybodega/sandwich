@@ -15,10 +15,7 @@ const SortableItem = SortableElement((element: { value: DropzoneFile }) => {
 
   return (
     <li>
-      <pre>name: {file.name}</pre>
-      <pre>path: {file.path}</pre>
-      <pre>type: {file.type}</pre>
-      <pre>uuid: {file.upload.uuid}</pre>
+      {file.path} ({file.type})
     </li>
   );
 });
@@ -45,7 +42,11 @@ export class SandwichSortableListComponent extends React.Component<SortableListP
   }
 
   render(): React.ReactElement {
-    return <SortableList items={this.props.items} onSortEnd={this.props.onSortEnd} />;
+    return (
+      <SortableList
+        items={this.props.items}
+        onSortEnd={this.props.onSortEnd} />
+    );
   }
 }
 

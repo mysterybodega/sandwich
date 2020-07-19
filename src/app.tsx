@@ -3,6 +3,7 @@ import './stylesheets/app.css';
 import React from 'react';
 import { SandwichDropzoneComponent, DropzoneFile } from './components/sandwich-dropzone-component';
 import { SandwichSortableListComponent, arrayMove } from './components/sandwich-sortable-list-component';
+import { createPDF } from './lib/pdf-helpers';
 
 interface AppProps {}
 
@@ -24,6 +25,9 @@ class App extends React.Component<AppProps, AppState> {
     });
   };
 
+  onButtonClick = (): void => {
+    createPDF(this.state.files);
+  };
 
   render(): React.ReactElement {
     const that = this;
@@ -37,9 +41,8 @@ class App extends React.Component<AppProps, AppState> {
       <div>
         <h1>Sandwich Beta</h1>
         <SandwichDropzoneComponent eventHandlers={eventHandlers} />
-        <h2>Sort</h2>
         <SandwichSortableListComponent items={this.state.files} onSortEnd={this.onSortEnd} />
-        <button>Sandwich PDF</button>
+        <button onClick={this.onButtonClick}>Sandwich PDF</button>
       </div>
     );
   }

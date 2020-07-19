@@ -12,14 +12,18 @@ ul {
   padding-left: 0;
 }
 
-ul li {
-  border: 1px solid black;
+li {
+  border: 1px solid gray;
+  border-radius: 5px;
+  cursor: grab;
+  display: block;
   margin-bottom: 10px;
-  padding: 20px;
+  padding: 8px 10px;
 }
 
 button {
   background: lightgreen;
+  cursor: pointer;
   font-size: 2rem;
   padding: 20px;
   width: 100%;
