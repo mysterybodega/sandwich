@@ -88,6 +88,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-dropzone-component": "^3.2.0"
+    "react-dropzone-component": "^3.2.0",
+    "react-sortable-hoc": "^1.11.0"
   }
 }
