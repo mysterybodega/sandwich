@@ -24,6 +24,11 @@ ul {
   box-sizing: border-box;
   height: 200px;
   width: 200px;
+  overflow: hidden;
+}
+
+.square img {
+  height: 100%
 }
 
 button {
@@ -34,6 +39,7 @@ button {
 
 .dzu-dropzone {
   overflow: hidden !important;
+  margin-bottom: 20px !important;
 }
 
 .dzu-previewContainer {
