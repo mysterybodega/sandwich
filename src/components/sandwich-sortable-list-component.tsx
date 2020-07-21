@@ -1,21 +1,22 @@
 import React from 'react';
-import { DropzoneFile } from './sandwich-dropzone-component';
+import { IFileWithMeta } from './sandwich-dropzone-component';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 interface SortableListState {
-  items: DropzoneFile[]
+  items: IFileWithMeta[]
 }
 
 interface SortableListProps extends SortableListState {
   onSortEnd: (sort: { oldIndex: number, newIndex: number }) => void
 }
 
-const SortableItem = SortableElement((element: { value: DropzoneFile }) => {
-  const file = element.value;
+const SortableItem = SortableElement((element: { value: IFileWithMeta }) => {
+  const file = element.value.file;
+  const meta = element.value.meta;
 
   return (
-    <li>
-      {file.path} ({file.type})
+    <li className="square">
+      <img height={100} src={meta.previewUrl} />
     </li>
   );
 });
@@ -25,7 +26,7 @@ const SortableList = SortableContainer((state: SortableListState) => {
     <ul>
       {state.items.map((file, index) => (
         <SortableItem
-          key={file.upload.uuid}
+          key={file.meta.id}
           index={index}
           value={file} />
       ))}
@@ -44,6 +45,7 @@ export class SandwichSortableListComponent extends React.Component<SortableListP
   render(): React.ReactElement {
     return (
       <SortableList
+        axis={'xy'}
         items={this.props.items}
         onSortEnd={this.props.onSortEnd} />
     );

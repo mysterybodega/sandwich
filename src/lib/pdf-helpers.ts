@@ -1,21 +1,21 @@
 import fs from 'fs';
 import os from 'os';
 import { promisify } from 'util';
-import { DropzoneFile } from '../components/sandwich-dropzone-component';
+import { IFileWithMeta } from '../components/sandwich-dropzone-component';
 import { PDFDocument } from 'pdf-lib';
 
 const HOME = os.homedir();
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-export async function createPDF(files: DropzoneFile[]): Promise<boolean> {
+export async function createPDF(files: IFileWithMeta[]): Promise<boolean> {
   if (files.length === 0) {
     return;
   }
 
   const pdfDoc = await PDFDocument.create();
 
-  files.forEach(async (file) => {
+  files.forEach(async ({ file }) => {
     const imageBytes = fs.readFileSync(file.path);
     let image, page;
 

@@ -1,35 +1,35 @@
-import 'dropzone/dist/min/dropzone.min.css';
-import 'react-dropzone-component/styles/filepicker.css';
+import 'react-dropzone-uploader/dist/styles.css'
 
-import React from 'react';
-import { DropzoneComponent, DropzoneComponentProps } from 'react-dropzone-component';
+import React, { Component, FC, ReactElement } from 'react';
+import Dropzone, { IDropzoneProps, ILayoutProps } from 'react-dropzone-uploader'
 
-export interface DropzoneFile extends File {
-  dataURL: string,
-  upload: {
-    uuid: string
-  }
+export interface ISandwichDropzoneProps {
+  onSubmit?: IDropzoneProps['onSubmit']
+  onChangeStatus?: IDropzoneProps['onChangeStatus']
 }
 
-export class SandwichDropzoneComponent extends React.Component<DropzoneComponentProps, DropzoneComponentProps> {
-  constructor(props: DropzoneComponentProps) {
+export class SandwichDropzoneComponent extends Component<ISandwichDropzoneProps> {
+  constructor(props: ISandwichDropzoneProps) {
     super(props);
-    this.state = {
-      config: {
-        postUrl: 'no-url'
-      },
-      djsConfig: {
-        autoProcessQueue: false
-      }
-    }
   }
 
-  render(): React.ReactElement {
+  render(): ReactElement {
     return (
-      <DropzoneComponent
-        config={this.state.config}
-        djsConfig={this.state.djsConfig}
-        eventHandlers={this.props.eventHandlers} />
+      <Dropzone
+        accept="image/jpeg,image/png,.pdf"
+        onChangeStatus={this.props.onChangeStatus}
+        LayoutComponent={Layout}
+        onSubmit={this.props.onSubmit} />
     );
   }
 }
+
+const Layout: FC<ILayoutProps> = ({ input, previews, submitButton, dropzoneProps, files, extra: { maxFiles } }) => {
+  return (
+    <div>
+      <div {...dropzoneProps}>{input}</div>
+    </div>
+  )
+}
+
+export { IDropzoneProps, IFileWithMeta } from 'react-dropzone-uploader';
