@@ -1,18 +1,14 @@
-import React, { Component, ReactElement } from 'react'
+import React, { FunctionComponent } from 'react'
 import { IFileWithMeta } from './sandwich-dropzone-component'
-import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc'
+import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
-interface ISortableListState {
+interface ISortableListProps {
   items: IFileWithMeta[]
-}
-
-interface ISortableListProps extends ISortableListState {
   onSortEnd: (sort: { oldIndex: number, newIndex: number }) => void
 }
 
-const SortableItem = SortableElement((element: { value: IFileWithMeta }) => {
-  const file = element.value.file
-  const meta = element.value.meta
+const SortableItem = SortableElement((item: { value: IFileWithMeta }) => {
+  const meta = item.value.meta
 
   return (
     <li className="square">
@@ -21,10 +17,10 @@ const SortableItem = SortableElement((element: { value: IFileWithMeta }) => {
   )
 })
 
-const SortableList = SortableContainer((state: ISortableListState) => {
+const SortableList = SortableContainer((props: ISortableListProps) => {
   return (
     <ul>
-      {state.items.map((file, index) => (
+      {props.items.map((file, index) => (
         <SortableItem
           key={file.meta.id}
           index={index}
@@ -34,22 +30,14 @@ const SortableList = SortableContainer((state: ISortableListState) => {
   )
 })
 
-export default class SandwichSortableGridComponent extends Component<ISortableListProps, ISortableListState> {
-  constructor(props: ISortableListProps) {
-    super(props)
-    this.state = {
-      items: props.items
-    }
-  }
-
-  render(): ReactElement {
-    return (
-      <SortableList
-        axis={'xy'}
-        items={this.props.items}
-        onSortEnd={this.props.onSortEnd} />
-    )
-  }
+const SandwichSortableGridComponent: FunctionComponent<ISortableListProps> = ({ items, onSortEnd }) => {
+  return (
+    <SortableList
+      axis={'xy'}
+      items={items}
+      onSortEnd={onSortEnd} />
+  )
 }
 
+export default SandwichSortableGridComponent
 export { arrayMove } from 'react-sortable-hoc'

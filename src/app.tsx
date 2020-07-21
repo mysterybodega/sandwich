@@ -1,15 +1,17 @@
 import './stylesheets/app.css'
 
-import React, { Component, ReactElement } from 'react'
+import React, { FunctionComponent } from 'react'
 import SandwichDropzoneComponent from './components/sandwich-dropzone-component'
 
-export default class App extends Component {
-  render(): ReactElement {
-    return (
-      <div>
-        <h1>Sandwich Beta</h1>
-        <SandwichDropzoneComponent />
-      </div>
-    );
-  }
+interface IAppProps {}
+
+const App: FunctionComponent<IAppProps> = () => {
+  return (
+    <div>
+      <h1>Sandwich Beta</h1>
+      <SandwichDropzoneComponent />
+    </div>
+  )
 }
+
+export default  App

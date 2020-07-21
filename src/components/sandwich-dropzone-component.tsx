@@ -1,69 +1,63 @@
 import 'react-dropzone-uploader/dist/styles.css'
 
-import React, { Component, FC, ReactElement } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 import Dropzone, { IDropzoneProps, IFileWithMeta, ILayoutProps } from 'react-dropzone-uploader'
 import SandwichSortableGridComponent, { arrayMove } from './sandwich-sortable-grid-component'
 import { createPDF } from '../lib/pdf-helpers'
 
-export { IFileWithMeta } from 'react-dropzone-uploader'
+interface ISandwichDropzoneProps {}
 
-export interface ISandwichDropzoneProps {}
-
-export interface ISandwichDropzoneState {
+interface ISandwichDropzoneState {
   files: IFileWithMeta[]
 }
 
-export default class SandwichDropzoneComponent extends Component<ISandwichDropzoneProps, ISandwichDropzoneState> {
-  constructor(props: ISandwichDropzoneProps) {
-    super(props)
-    this.state = {
-      files: []
-    }
-  }
+const SandwichDropzoneComponent: FunctionComponent<ISandwichDropzoneProps> = () => {
+  const [state, setState] = useState<ISandwichDropzoneState>({ files: [] });
 
-  render(): ReactElement {
-    return (
-      <Dropzone
-        accept="image/jpeg,image/png,.pdf"
-        onChangeStatus={this.handleChangeStatus}
-        LayoutComponent={this.Layout}
-      />
-    )
-  }
-
-  handleChangeStatus: IDropzoneProps['onChangeStatus'] = (file, status) => {
+  const handleChangeStatus: IDropzoneProps['onChangeStatus'] = (file, status) => {
     if (status === 'done') {
-      this.setState({
-        files: this.state.files.concat(file)
+      setState({
+        files: state.files.concat(file)
       })
     } else if (status === 'removed') {
-      this.setState({
-        files: this.state.files.filter(otherFile => otherFile.meta.id !== file.meta.id)
+      setState({
+        files: state.files.filter(otherFile => otherFile.meta.id !== file.meta.id)
       })
     }
   }
 
-  handleSortEnd = (sort: { oldIndex: number, newIndex: number }): void => {
-    this.setState({
-      files: arrayMove(this.state.files, sort.oldIndex, sort.newIndex)
+  const handleSortEnd = (sort: { oldIndex: number, newIndex: number }): void => {
+    setState({
+      files: arrayMove(state.files, sort.oldIndex, sort.newIndex)
     })
   }
 
-  handleClick = (): void => {
-    createPDF(this.state.files)
+  const handleClick = (): void => {
+    createPDF(state.files)
   }
 
-  Layout: FC<ILayoutProps> = ({ input, dropzoneProps, files }) => {
+  const LayoutComponent: FunctionComponent<ILayoutProps> = ({ input, dropzoneProps, files }) => {
     return (
       <div className="sandwich-dropzone-component">
         <div {...dropzoneProps}>
           <SandwichSortableGridComponent
-            items={this.state.files}
-            onSortEnd={this.handleSortEnd} />
+            items={state.files}
+            onSortEnd={handleSortEnd} />
           {input}
         </div>
-        <button onClick={this.handleClick}>Export PDF</button>
+        <button onClick={handleClick}>Export PDF</button>
       </div>
     )
   }
+
+  return (
+    <Dropzone
+      accept="image/jpeg,image/png,.pdf"
+      onChangeStatus={handleChangeStatus}
+      LayoutComponent={LayoutComponent}
+    />
+  )
 }
+
+export default SandwichDropzoneComponent
+export { IFileWithMeta } from 'react-dropzone-uploader'
