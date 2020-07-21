@@ -62,7 +62,7 @@ export default class SandwichDropzoneComponent extends Component<ISandwichDropzo
             onSortEnd={this.handleSortEnd} />
           {input}
         </div>
-        <button onClick={this.handleClick}>Sandwich PDF</button>
+        <button onClick={this.handleClick}>Export PDF</button>
       </div>
     )
   }
