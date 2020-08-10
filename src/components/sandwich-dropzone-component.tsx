@@ -1,15 +1,20 @@
 import 'react-dropzone-uploader/dist/styles.css'
 
-import React, { useState, FunctionComponent } from 'react';
+import React, { useState, FunctionComponent } from 'react'
 import Dropzone, { IDropzoneProps, IFileWithMeta, ILayoutProps } from 'react-dropzone-uploader'
 import SandwichSortableGridComponent, { arrayMove } from './sandwich-sortable-grid-component'
 import { createPDF } from '../lib/pdf-helpers'
+import { remote } from 'electron'
+import fs from 'fs'
+import { promisify } from 'util'
 
 interface ISandwichDropzoneProps {}
 
 interface ISandwichDropzoneState {
   files: IFileWithMeta[]
 }
+
+const writeFile = promisify(fs.writeFile)
 
 const SandwichDropzoneComponent: FunctionComponent<ISandwichDropzoneProps> = () => {
   const [state, setState] = useState<ISandwichDropzoneState>({ files: [] });
@@ -32,8 +37,20 @@ const SandwichDropzoneComponent: FunctionComponent<ISandwichDropzoneProps> = () 
     })
   }
 
-  const handleClick = (): void => {
-    createPDF(state.files)
+  const handleClick = async (): Promise<void> => {
+    const { filePath } = await remote.dialog.showSaveDialog(
+      remote.getCurrentWindow(),
+      {
+        defaultPath : "sandwich.pdf",
+        buttonLabel : "Save PDF",
+        filters: [{ name: 'PDFs', extensions: ['pdf'] }]
+      }
+    )
+
+    if (filePath) {
+      const pdf = await createPDF(state.files)
+      const out = await writeFile(filePath, pdf)
+    }
   }
 
   const LayoutComponent: FunctionComponent<ILayoutProps> = ({ input, dropzoneProps, files }) => {
@@ -45,7 +62,7 @@ const SandwichDropzoneComponent: FunctionComponent<ISandwichDropzoneProps> = () 
             onSortEnd={handleSortEnd} />
           {input}
         </div>
-        <button onClick={handleClick}>Export PDF</button>
+        <button onClick={handleClick}>Save PDF</button>
       </div>
     )
   }
