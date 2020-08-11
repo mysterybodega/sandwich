@@ -13,6 +13,7 @@ const SortableItem = SortableElement((item: { value: IFileWithMeta }) => {
   return (
     <li className="square">
       <img src={meta.previewUrl} />
+      <span>{meta.name}</span>
     </li>
   )
 })
