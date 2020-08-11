@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import { IFileWithMeta } from './sandwich-dropzone-component'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
@@ -31,7 +31,7 @@ const SortableList = SortableContainer((props: ISortableListProps) => {
   )
 })
 
-const SandwichSortableGridComponent: FunctionComponent<ISortableListProps> = ({ items, onSortEnd }) => {
+const SandwichSortableGridComponent: FC<ISortableListProps> = ({ items, onSortEnd }) => {
   return (
     <SortableList
       axis={'xy'}

@@ -1,11 +1,11 @@
 import './stylesheets/app.css'
 
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import SandwichDropzoneComponent from './components/sandwich-dropzone-component'
 
 interface IAppProps {}
 
-const App: FunctionComponent<IAppProps> = () => {
+const App: FC<IAppProps> = () => {
   return (
     <div>
       <h1>Sandwich Beta</h1>
