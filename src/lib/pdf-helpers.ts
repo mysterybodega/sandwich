@@ -1,9 +1,9 @@
 import fs from 'fs'
 import { PDFDocument } from 'pdf-lib'
 
-type AddFunction = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
+type AddFileToPDF = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
 
-const addImageToPDFDocument: AddFunction = async (pdfDoc, file) => {
+const addImageToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
   let page, image
   const fileBuffer = fs.readFileSync(file.path)
 
@@ -31,10 +31,14 @@ const addImageToPDFDocument: AddFunction = async (pdfDoc, file) => {
   return pdfDoc
 }
 
-const addPDFToPDFDocument: AddFunction = async (pdfDoc, file) => {
+const addPDFToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
   const fileBuffer = fs.readFileSync(file.path)
   const srcDoc = await PDFDocument.load(fileBuffer)
   const pages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices())
+
+  for (const page of pages) {
+    pdfDoc.addPage(page)
+  }
 
   return pdfDoc
 }
@@ -42,7 +46,7 @@ const addPDFToPDFDocument: AddFunction = async (pdfDoc, file) => {
 export async function createPDF(files: File[]): Promise<Uint8Array> {
   let pdfDoc = await PDFDocument.create()
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     switch(file.type) {
       case 'image/jpeg':
       case 'image/png':
@@ -54,7 +58,7 @@ export async function createPDF(files: File[]): Promise<Uint8Array> {
       default:
         break
     }
-  });
+  }
 
   return pdfDoc.save()
 }

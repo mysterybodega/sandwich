@@ -12,9 +12,13 @@ const SortableItem = SortableElement((item: { value: IFileWithMeta }) => {
 
   return (
     <li className="square">
-      <button onClick={file.remove}>Remove File</button>
-      <img src={file.meta.previewUrl} />
-      <span>{file.meta.name}</span>
+      <div>
+        <button onClick={file.remove}>Remove File</button>
+        <img src={file.meta.previewUrl} />
+      </div>
+      <div>
+        <span>{file.meta.name}</span>
+      </div>
     </li>
   )
 })
