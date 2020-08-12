@@ -8,12 +8,13 @@ interface ISortableListProps {
 }
 
 const SortableItem = SortableElement((item: { value: IFileWithMeta }) => {
-  const meta = item.value.meta
+  const file = item.value
 
   return (
     <li className="square">
-      <img src={meta.previewUrl} />
-      <span>{meta.name}</span>
+      <button onClick={file.remove}>Remove File</button>
+      <img src={file.meta.previewUrl} />
+      <span>{file.meta.name}</span>
     </li>
   )
 })
@@ -22,10 +23,7 @@ const SortableList = SortableContainer((props: ISortableListProps) => {
   return (
     <ul>
       {props.items.map((file, index) => (
-        <SortableItem
-          key={file.meta.id}
-          index={index}
-          value={file} />
+        <SortableItem key={file.meta.id} index={index} value={file} />
       ))}
     </ul>
   )
@@ -33,10 +31,7 @@ const SortableList = SortableContainer((props: ISortableListProps) => {
 
 const SandwichSortableGridComponent: FC<ISortableListProps> = ({ items, onSortEnd }) => {
   return (
-    <SortableList
-      axis={'xy'}
-      items={items}
-      onSortEnd={onSortEnd} />
+    <SortableList axis={'xy'} items={items} onSortEnd={onSortEnd} />
   )
 }
 
