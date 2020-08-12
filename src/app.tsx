@@ -14,4 +14,4 @@ const App: FC<IAppProps> = () => {
   )
 }
 
-export default  App
+export default App
