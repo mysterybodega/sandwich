@@ -6,7 +6,6 @@ import SandwichSortableGridComponent, { arrayMove } from './sandwich-sortable-gr
 import { createPDF } from '../lib/pdf-helpers'
 import { remote } from 'electron'
 import fs from 'fs'
-import { promisify } from 'util'
 
 interface ISandwichDropzoneProps {}
 
