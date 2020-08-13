@@ -1,20 +1,18 @@
 import 'react-dropzone-uploader/dist/styles.css'
 
+import { remote } from 'electron'
 import React, { useState, FC } from 'react'
 import Dropzone, { IDropzoneProps, IFileWithMeta, ILayoutProps } from 'react-dropzone-uploader'
-import SandwichSortableGridComponent, { arrayMove } from './sandwich-sortable-grid-component'
+import SortableListComponent, { arrayMove } from './sortable-list-component'
 import { createPDF } from '../lib/pdf-helpers'
-import { remote } from 'electron'
 import fs from 'fs'
 
-interface ISandwichDropzoneProps {}
-
-interface ISandwichDropzoneState {
+interface IDropzoneComponentState {
   files: IFileWithMeta[]
 }
 
-const SandwichDropzoneComponent: FC<ISandwichDropzoneProps> = () => {
-  const [state, setState] = useState<ISandwichDropzoneState>({ files: [] });
+const DropzoneComponent: FC = () => {
+  const [state, setState] = useState<IDropzoneComponentState>({ files: [] });
 
   const handleChangeStatus: IDropzoneProps['onChangeStatus'] = (file, status) => {
     if (status === 'done') {
@@ -73,9 +71,7 @@ const SandwichDropzoneComponent: FC<ISandwichDropzoneProps> = () => {
     return (
       <div className="sandwich-dropzone-component">
         <div {...dropzoneProps}>
-          <SandwichSortableGridComponent
-            items={state.files}
-            onSortEnd={handleSortEnd} />
+          <SortableListComponent items={state.files} onSortEnd={handleSortEnd} />
           {input}
         </div>
         <button onClick={handleClick}>Save PDF</button>
@@ -92,5 +88,5 @@ const SandwichDropzoneComponent: FC<ISandwichDropzoneProps> = () => {
   )
 }
 
-export default SandwichDropzoneComponent
+export default DropzoneComponent
 export { IFileWithMeta } from 'react-dropzone-uploader'

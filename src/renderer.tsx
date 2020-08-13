@@ -1,5 +1,11 @@
+import { remote } from 'electron'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './app'
+import App from './components/app'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const { app } = remote
+
+ReactDOM.render(
+  <App name={app.getName()} version={app.getVersion()} />,
+  document.getElementById('root')
+)
