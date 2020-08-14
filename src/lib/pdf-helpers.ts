@@ -1,20 +1,52 @@
-import fs from 'fs'
+import { FileType } from './file-type'
 import { PDFDocument } from 'pdf-lib'
+import { readFileSync } from 'fs'
 
-type AddFileToPDF = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
+type AddFileToPDFDocument = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
 
-const addImageToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
+export async function createPDF(files: File[]): Promise<Uint8Array> {
+  let pdfDoc = await PDFDocument.create()
+
+  for (const file of files) {
+    pdfDoc = await addFileToPDFDocument(pdfDoc, file)
+  }
+
+  return pdfDoc.save()
+}
+
+const addFileToPDFDocument: AddFileToPDFDocument = async (pdfDoc, file) => {
+  switch(file.type) {
+    case FileType.JPEG:
+    case FileType.PNG:
+      pdfDoc = await addImageToPDFDocument(pdfDoc, file)
+      break
+    case FileType.PDF:
+      pdfDoc = await addPDFToPDFDocument(pdfDoc, file)
+      break
+    default:
+      break
+  }
+
+  return pdfDoc
+}
+
+const addImageToPDFDocument: AddFileToPDFDocument = async (pdfDoc, file) => {
   let page, image
-  const fileBuffer = fs.readFileSync(file.path)
+  const fileBuffer = readFileSync(file.path)
 
-  if (file.type === 'image/jpeg' || file.type === 'image/png') {
+  if (file.type === FileType.JPEG || file.type === FileType.PNG) {
     page = pdfDoc.addPage()
   }
 
-  if (file.type === 'image/jpeg') {
-    image = await pdfDoc.embedJpg(fileBuffer)
-  } else if (file.type === 'image/png') {
-    image = await pdfDoc.embedPng(fileBuffer)
+  switch(file.type) {
+    case FileType.JPEG:
+      image = await pdfDoc.embedJpg(fileBuffer)
+      break;
+    case FileType.PNG:
+      image = await pdfDoc.embedPng(fileBuffer)
+      break;
+    default:
+      break;
   }
 
   if (page && image) {
@@ -31,8 +63,8 @@ const addImageToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
   return pdfDoc
 }
 
-const addPDFToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
-  const fileBuffer = fs.readFileSync(file.path)
+const addPDFToPDFDocument: AddFileToPDFDocument = async (pdfDoc, file) => {
+  const fileBuffer = readFileSync(file.path)
   const srcDoc = await PDFDocument.load(fileBuffer)
   const pages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices())
 
@@ -41,24 +73,4 @@ const addPDFToPDFDocument: AddFileToPDF = async (pdfDoc, file) => {
   }
 
   return pdfDoc
-}
-
-export async function createPDF(files: File[]): Promise<Uint8Array> {
-  let pdfDoc = await PDFDocument.create()
-
-  for (const file of files) {
-    switch(file.type) {
-      case 'image/jpeg':
-      case 'image/png':
-        pdfDoc = await addImageToPDFDocument(pdfDoc, file)
-        break
-      case 'application/pdf':
-        pdfDoc = await addPDFToPDFDocument(pdfDoc, file)
-        break
-      default:
-        break
-    }
-  }
-
-  return pdfDoc.save()
 }
