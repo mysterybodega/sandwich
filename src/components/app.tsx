@@ -1,4 +1,4 @@
-import '../stylesheets/app.css'
+import '../assets/stylesheets/app.css'
 
 import React, { FC } from 'react'
 import DropzoneComponent from './dropzone-component'
