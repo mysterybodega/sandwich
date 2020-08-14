@@ -1,4 +1,4 @@
-![](src/images/sandwich-logo.png)
+![](src/assets/images/sandwich-logo.png)
 
 # Sandwich Beta (🚧 Under Construction 🚧)
 
