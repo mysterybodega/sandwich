@@ -5,7 +5,7 @@ import DropzoneComponent from './dropzone-component'
 
 interface IAppProps {}
 
-const App: FC<IAppProps> = (props) => (
+const App: FC<IAppProps> = () => (
   <div>
     <h1>Sandwich Beta</h1>
     <DropzoneComponent />
