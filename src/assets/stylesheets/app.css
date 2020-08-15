@@ -29,6 +29,10 @@ ul {
   height: 100%
 }
 
+.dropzone-component--axis--y .square {
+  width: 100%;
+}
+
 button {
   cursor: pointer;
   padding: 20px 3%;

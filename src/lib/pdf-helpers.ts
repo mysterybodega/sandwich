@@ -4,6 +4,13 @@ import { readFileSync } from 'fs'
 
 type AddFileToPDFDocument = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
 
+export async function createPDFPreviewUrl(file: File): Promise<string> {
+  const fileBuffer = readFileSync(file.path)
+  const pdfDoc = await PDFDocument.load(fileBuffer)
+
+  return await pdfDoc.saveAsBase64({ dataUri: true })
+}
+
 export async function createPDF(files: File[]): Promise<Uint8Array> {
   let pdfDoc = await PDFDocument.create()
 

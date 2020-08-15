@@ -1,15 +1,19 @@
 import React, { FC } from 'react'
 import { IFileWithMeta } from './dropzone-component'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
+import { FileType } from '../lib/file-type'
+
+export type Axis = 'x' | 'y' | 'xy'
 
 interface ISortableListProps {
+  axis: Axis,
   items: IFileWithMeta[]
   onSortEnd: (sort: { oldIndex: number, newIndex: number }) => void
 }
 
-const SortableListComponent: FC<ISortableListProps> = ({ items, onSortEnd }) => {
+const SortableListComponent: FC<ISortableListProps> = ({ axis, items, onSortEnd }) => {
   return (
-    <SortableContainerComponent axis={'xy'} items={items} onSortEnd={onSortEnd} />
+    <SortableContainerComponent axis={axis} items={items} onSortEnd={onSortEnd} />
   )
 }
 
@@ -24,17 +28,25 @@ const SortableContainerComponent = SortableContainer((props: ISortableListProps)
 })
 
 const SortableElementComponent = SortableElement((item: { value: IFileWithMeta }) => {
-  const file = item.value
+  const elem = item.value
+  const file = item.value.file
+  const meta = item.value.meta
+
+  let preview;
+
+  if (file.type === FileType.PDF) {
+    preview = <object type={FileType.PDF} data={meta.previewUrl} />
+  } else {
+    preview = <img src={meta.previewUrl} />
+  }
 
   return (
     <li className="square">
+      <button onClick={elem.remove}>Remove File</button>
       <div>
-        <button onClick={file.remove}>Remove File</button>
-        <img src={file.meta.previewUrl} />
+        {preview}
       </div>
-      <div>
-        <span>{file.meta.name}</span>
-      </div>
+      <span>{meta.name}</span>
     </li>
   )
 })

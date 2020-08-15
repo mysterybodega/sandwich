@@ -1,26 +1,44 @@
 import 'react-dropzone-uploader/dist/styles.css'
 
-import { remote } from 'electron'
-import React, { useState, FC } from 'react'
 import Dropzone, { IDropzoneProps, IFileWithMeta, ILayoutProps } from 'react-dropzone-uploader'
-import SortableListComponent, { arrayMove } from './sortable-list-component'
-import { createPDF } from '../lib/pdf-helpers'
+import React, { useState, FC } from 'react'
+import SortableListComponent, { Axis, arrayMove } from './sortable-list-component'
 import fs from 'fs'
+import { createPDF, createPDFPreviewUrl } from '../lib/pdf-helpers'
+import { remote } from 'electron'
+import { FileType } from '../lib/file-type'
 
 interface IDropzoneComponentState {
+  axis: Axis,
   files: IFileWithMeta[]
 }
 
 const DropzoneComponent: FC = () => {
-  const [state, setState] = useState<IDropzoneComponentState>({ files: [] });
+  const [state, setState] = useState<IDropzoneComponentState>({
+    axis: 'xy',
+    files: []
+  })
 
   const handleChangeStatus: IDropzoneProps['onChangeStatus'] = (file, status) => {
     if (status === 'done') {
-      setState({
-        files: state.files.concat(file)
-      })
+      if (file.file.type === FileType.PDF) {
+        createPDFPreviewUrl(file.file).then((previewUrl) => {
+          file.meta.previewUrl = previewUrl
+
+          setState({
+            axis: state.axis,
+            files: state.files.concat(file)
+          })
+        })
+      } else {
+        setState({
+          axis: state.axis,
+          files: state.files.concat(file)
+        })
+      }
     } else if (status === 'removed') {
       setState({
+        axis: state.axis,
         files: state.files.filter(otherFile => otherFile.meta.id !== file.meta.id)
       })
     }
@@ -28,6 +46,7 @@ const DropzoneComponent: FC = () => {
 
   const handleSortEnd = (sort: { oldIndex: number, newIndex: number }): void => {
     setState({
+      axis: state.axis,
       files: arrayMove(state.files, sort.oldIndex, sort.newIndex)
     })
   }
@@ -67,11 +86,33 @@ const DropzoneComponent: FC = () => {
     }
   }
 
+  const toggleAxis = () => {
+    let axis: Axis;
+
+    if (state.axis === 'xy') {
+      axis = 'y'
+    } else if (state.axis === 'y') {
+      axis = 'xy'
+    }
+
+    setState({
+      axis,
+      files: state.files
+    })
+  }
+
   const LayoutComponent: FC<ILayoutProps> = ({ input, dropzoneProps, files }) => {
+    const className = `
+      dropzone-component
+      dropzone-component--axis--${state.axis}
+    `
+    const axisButtonText = state.axis === 'xy' ? 'Show List View' : 'Show Grid View'
+
     return (
-      <div className="sandwich-dropzone-component">
+      <div className={className}>
+        <button onClick={toggleAxis}>{axisButtonText}</button>
         <div {...dropzoneProps}>
-          <SortableListComponent items={state.files} onSortEnd={handleSortEnd} />
+          <SortableListComponent axis={state.axis} items={state.files} onSortEnd={handleSortEnd} />
           {input}
         </div>
         <button onClick={handleClick}>Save PDF</button>

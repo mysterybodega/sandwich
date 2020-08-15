@@ -1,3 +1,12 @@
+# 0.2.1 (2020-08-15)
+
+## New Features
+
+- Add a PDF preview.
+- Add app icon for Mac.
+- Customize menu and title bar.
+- Add toggle for grid or list view.
+
 # 0.2.0 (2020-08-12)
 
 ## Bug Fixes

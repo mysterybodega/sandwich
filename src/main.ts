@@ -1,14 +1,13 @@
-import { app, BrowserWindow } from 'electron';
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
-}
+import { app, BrowserWindow, Menu } from 'electron'
+import menu from './menu'
 
-const createWindow = (): void => {
+const createBrowserWindow = () => {
   const mainWindow = new BrowserWindow({
     height: 800,
     width: 800,
+    titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true
     }
@@ -16,21 +15,38 @@ const createWindow = (): void => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
+  Menu.setApplicationMenu(menu)
+
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
-};
+}
 
-app.on('ready', createWindow);
+const handleReady = () => createBrowserWindow()
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
+const handleActivate = () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createBrowserWindow()
   }
-});
+}
+
+const handleWindowAllClosed = () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+}
+
+if (require('electron-squirrel-startup')) {
+  app.quit()
+}
+
+app.setAboutPanelOptions({
+  applicationName: app.getName(),
+  applicationVersion: app.getVersion(),
+  version: '',
+  copyright: 'Copyright © 2020 Mystery Bodega LLC'
+})
+
+app.on('ready', handleReady)
+   .on('activate', handleActivate)
+   .on('window-all-closed', handleWindowAllClosed)

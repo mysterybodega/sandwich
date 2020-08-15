@@ -3,14 +3,11 @@ import '../assets/stylesheets/app.css'
 import React, { FC } from 'react'
 import DropzoneComponent from './dropzone-component'
 
-interface IAppProps {
-  name: string,
-  version: string,
-}
+interface IAppProps {}
 
 const App: FC<IAppProps> = (props) => (
   <div>
-    <h1>{props.name} (v{props.version})</h1>
+    <h1>Sandwich Beta</h1>
     <DropzoneComponent />
   </div>
 )
