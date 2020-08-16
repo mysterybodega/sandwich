@@ -1,0 +1,15 @@
+button {
+  cursor: pointer;
+  background: $green-500;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 40px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: $green-100;
+  }
+}

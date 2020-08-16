@@ -1,3 +1,9 @@
+# 0.2.2 (2020-08-16)
+
+## New Features
+
+- Improved design.
+
 # 0.2.1 (2020-08-15)
 
 ## New Features

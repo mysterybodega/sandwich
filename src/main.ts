@@ -4,10 +4,11 @@ import { app, BrowserWindow, Menu } from 'electron'
 import menu from './menu'
 
 const createBrowserWindow = () => {
+  const isDev = !app.isPackaged
   const mainWindow = new BrowserWindow({
     height: 800,
-    width: 800,
-    titleBarStyle: 'hidden',
+    width: isDev ? 1600 : 800,
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: true
     }
@@ -17,7 +18,7 @@ const createBrowserWindow = () => {
 
   Menu.setApplicationMenu(menu)
 
-  if (!app.isPackaged) {
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 }

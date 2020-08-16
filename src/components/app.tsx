@@ -1,15 +1,13 @@
-import '../assets/stylesheets/app.css'
+import '../assets/stylesheets/app.scss'
 
 import React, { FC } from 'react'
 import DropzoneComponent from './dropzone-component'
 
-interface IAppProps {}
-
-const App: FC<IAppProps> = () => (
-  <div>
-    <h1>Sandwich Beta</h1>
+const App: FC = () => (
+  <>
+    <div className="app__title">Sandwich Beta</div>
     <DropzoneComponent />
-  </div>
+  </>
 )
 
 export default App
