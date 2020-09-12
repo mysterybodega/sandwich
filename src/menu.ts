@@ -1,5 +1,7 @@
 import { app, Menu, MenuItem } from 'electron'
 
+const isDev = !app.isPackaged
+const isMac = process.platform === 'darwin'
 const menu = new Menu()
 
 menu.append(
@@ -9,6 +11,17 @@ menu.append(
       { role: 'about' },
       { type: 'separator' },
       { role: 'quit' },
+    ]
+  })
+)
+
+menu.append(
+  new MenuItem({
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forceReload' },
+      { role: 'toggleDevTools' },
     ]
   })
 )

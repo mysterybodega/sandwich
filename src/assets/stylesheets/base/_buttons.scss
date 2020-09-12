@@ -3,7 +3,9 @@ button {
   background: $green-500;
   border: none;
   border-radius: 20px;
-  padding: 10px 40px;
+  font-size: 16px;
+  height: 40px;
+  padding: 0 40px;
 
   &:focus {
     outline: none;
@@ -12,4 +14,10 @@ button {
   &:hover {
     background: $green-100;
   }
+}
+
+button.disabled {
+  background: $gray-500;
+  color: $gray-600;
+  cursor: default;
 }

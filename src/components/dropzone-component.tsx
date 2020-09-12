@@ -3,7 +3,9 @@ import React, { useEffect, useState, FC } from 'react'
 import Dropzone, {
   IDropzoneProps,
   IFileWithMeta,
-  ILayoutProps
+  ILayoutProps,
+  IInputProps,
+  defaultClassNames
 } from 'react-dropzone-uploader'
 
 import {
@@ -46,11 +48,12 @@ const DropzoneComponent: FC = () => {
   const handleChangeStatus: IDropzoneProps['onChangeStatus'] = (file, status) => {
     if (status === 'done') {
       if (file.file.type === FileType.PDF) {
-        createPDFPreviewUrl(file.file).then((previewUrl) => {
-          file.meta.previewUrl = previewUrl
+        setFiles(state.files.concat(file))
 
-          setFiles(state.files.concat(file))
-        })
+        // TODO: This is buggy and causes errors when uploading a lot of files.
+        // createPDFPreviewUrl(file.file).then((previewUrl) => {
+        //   file.meta.previewUrl = previewUrl
+        // })
       } else {
         setFiles(state.files.concat(file))
       }
@@ -66,6 +69,10 @@ const DropzoneComponent: FC = () => {
   }
 
   const handleClick = async (): Promise<void> => {
+    if (state.files.length === 0) {
+      return
+    }
+
     const { filePath } = await remote.dialog.showSaveDialog(
       remote.getCurrentWindow(),
       {
@@ -100,51 +107,79 @@ const DropzoneComponent: FC = () => {
     }
   }
 
-  const LayoutComponent: FC<ILayoutProps> = ({ input, dropzoneProps }) => {
-    return (
-      <div className={cn()}>
-        <div className={cn('header')}>
-          <div className={cn('header', 'btns')}>
-            <a className={
-              classNames(cn('header', 'btn'), {
-                [cn('header', 'btn--active')]: state.axis === 'xy'
-              })
-            }
-               onClick={() => setAxis('xy')}>
-              <i className="fa fa-lg fa-th-large"></i>
-            </a>
+  const LayoutComponent: FC<ILayoutProps> = ({
+    input,
+    dropzoneProps
+  }) => (
+    <div className={cn()}>
+      <div className={cn('header')}>
+        <div className={cn('header', 'btns')}>
+          <a className={
+            classNames(cn('header', 'btn'), {
+              [cn('header', 'btn--active')]: state.axis === 'xy'
+            })
+          }
+             onClick={() => setAxis('xy')}>
+            <i className="fa fa-lg fa-th-large"></i>
+          </a>
 
-            <a className={
-              classNames(cn('header', 'btn'), {
-                [cn('header', 'btn--active')]: state.axis === 'y'
-              })
-            }
-               onClick={() => setAxis('y')}>
-              <i className="fa fa-lg fa-bars"></i>
-            </a>
-          </div>
-        </div>
+          <a className={
+            classNames(cn('header', 'btn'), {
+              [cn('header', 'btn--active')]: state.axis === 'y'
+            })
+          }
+             onClick={() => setAxis('y')}>
+            <i className="fa fa-lg fa-bars"></i>
+          </a>
 
-        <div {...dropzoneProps}>
-          <SortableListComponent
-            axis={state.axis}
-            items={state.files}
-            onSortEnd={handleSortEnd} />
-          {input}
-        </div>
-
-        <div className={cn('footer')}>
-          <button onClick={handleClick}>Make PDF</button>
+          <a className={classNames(cn('header', 'btn'))}>
+            {input}
+          </a>
         </div>
       </div>
-    )
-  }
+
+      <div className={cn('body')}>
+        <div {...dropzoneProps}>
+          <span className={defaultClassNames.inputLabel} style={{ cursor: 'unset' }}>
+            <SortableListComponent
+              axis={state.axis}
+              items={state.files}
+              onSortEnd={handleSortEnd} />
+
+            {state.files.length === 0 && <span className="dropzone-text">Drag Files</span>}
+          </span>
+        </div>
+      </div>
+
+      <div className={cn('footer')}>
+        <button
+          onClick={handleClick}
+          className={classNames({ disabled: state.files.length === 0 })}>
+          Make PDF
+        </button>
+      </div>
+    </div>
+  )
+
+  const InputComponent: FC<IInputProps> = ({ accept, onFiles, getFilesFromEvent }) => (
+    <label>
+      <i className="fa fa-lg fa-plus"></i>
+      <input
+        style={{ display: 'none' }}
+        type="file"
+        accept={accept}
+        multiple
+        onChange={async (e) => onFiles(await getFilesFromEvent(e))}
+      />
+    </label>
+  )
 
   return (
     <Dropzone
       accept="image/jpeg,image/png,.pdf"
       onChangeStatus={handleChangeStatus}
       LayoutComponent={LayoutComponent}
+      InputComponent={InputComponent}
     />
   )
 }
@@ -181,11 +216,17 @@ const SortableListComponent: FC<ISortableListProps> = ({ axis, items, onSortEnd 
     if (file.type === FileType.PDF) {
       preview = <object type={FileType.PDF} data={meta.previewUrl} />
     } else {
-      preview = <img src={meta.previewUrl} />
+      preview = <div style={{ backgroundImage: `url(${meta.previewUrl})` }}></div>
     }
 
+    const [hover, setHover] = useState<boolean>(false)
+    const handleMouseEnter = () => setHover(true)
+    const handleMouseLeave = () => setHover(false)
+
     return (
-      <li className={classNames(cn('file'), cn(`file--axis-${axis}`))}>
+      <li className={classNames(cn('file'), cn(`file--axis-${axis}`))}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
         <div className={cn('file', 'sort-index')}>
           Page {sortIndex + 1}
         </div>
@@ -203,6 +244,7 @@ const SortableListComponent: FC<ISortableListProps> = ({ axis, items, onSortEnd 
         </div>
 
         <a className={cn('file', 'remove-btn')}
+           style={{ display: hover ? 'block' : 'none' }}
            onClick={elem.remove}>
           <i className="fa fa-lg fa-times-circle"></i>
         </a>
@@ -212,7 +254,8 @@ const SortableListComponent: FC<ISortableListProps> = ({ axis, items, onSortEnd 
 
   return (
     <SortableContainerComponent
-      pressDelay={200}
+      pressDelay={100}
+      helperClass={cn('file--grabbing')}
       axis={axis}
       items={items}
       onSortEnd={onSortEnd} />

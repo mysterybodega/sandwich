@@ -3,13 +3,16 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 import { app, BrowserWindow, Menu } from 'electron'
 import menu from './menu'
 
+const isDev = !app.isPackaged
+
 const createBrowserWindow = () => {
-  const isDev = !app.isPackaged
   const mainWindow = new BrowserWindow({
-    height: 800,
-    width: isDev ? 1600 : 800,
-    titleBarStyle: 'hiddenInset',
+    height: 600,
+    width: 800,
+    maximizable: false,
+    resizable: isDev,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });

@@ -24,4 +24,20 @@ module.exports = [
       }
     }
   },
+  {
+    test: /\.css$/,
+    use: ['style-loader', 'css-loader']
+  },
+  {
+    test: /\.s[ac]ss$/,
+    use: ['style-loader', 'css-loader', 'sass-loader']
+  },
+  {
+    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    loader: 'url-loader'
+  },
+  {
+    test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    loader: 'url-loader'
+  }
 ];

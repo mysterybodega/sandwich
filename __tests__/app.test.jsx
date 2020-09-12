@@ -6,6 +6,6 @@ describe('App', () => {
   it('renders App', async () => {
     var { getByText } = render(<App />);
 
-    expect(getByText('Sandwich Beta')).toBeDefined();
+    expect(getByText('Make PDF')).toBeDefined();
   })
 })

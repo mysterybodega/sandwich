@@ -6,10 +6,5 @@
 @import "components/dropzone-component";
 
 .app {
-  padding: 1rem;
-
-  &__title {
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+  height: 100vh;
 }
