@@ -1,10 +1,7 @@
 import { app, Menu, MenuItem } from 'electron'
 
-const isDev = !app.isPackaged
-const isMac = process.platform === 'darwin'
 const menu = new Menu()
-
-menu.append(
+const menuItems = [
   new MenuItem({
     label: app.name,
     submenu: [
@@ -12,10 +9,7 @@ menu.append(
       { type: 'separator' },
       { role: 'quit' },
     ]
-  })
-)
-
-menu.append(
+  }),
   new MenuItem({
     label: 'View',
     submenu: [
@@ -24,6 +18,10 @@ menu.append(
       { role: 'toggleDevTools' },
     ]
   })
-)
+]
+
+for (const menuItem of menuItems) {
+  menu.append(menuItem)
+}
 
 export default menu
