@@ -19,8 +19,8 @@ import filesize from 'filesize'
 import fs from 'fs'
 import { remote } from 'electron'
 
-import { FileType } from '../lib/file-type'
-import { createPDF, createPDFPreviewUrl } from '../lib/pdf-helpers'
+import FileType from '../lib/FileType'
+import { createPDF, createPDFPreviewUrl } from '../lib/PDFHelpers'
 
 type Axis = 'y' | 'xy'
 

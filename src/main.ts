@@ -1,8 +1,8 @@
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 
 import { app, BrowserWindow, Menu } from 'electron'
-import { isDev } from './lib/is'
-import menu from './menu'
+import { isDev } from './lib/Is'
+import menu from './lib/Menu'
 
 const createBrowserWindow = () => {
   const mainWindow = new BrowserWindow({

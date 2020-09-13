@@ -1,4 +1,4 @@
-import { FileType } from './file-type'
+import FileType from './FileType'
 import { PDFDocument } from 'pdf-lib'
 import { readFileSync } from 'fs'
 

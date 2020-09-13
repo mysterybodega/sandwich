@@ -1,7 +1,7 @@
 import '../assets/stylesheets/app.scss'
 
 import React, { FC } from 'react'
-import DropzoneComponent from './dropzone-component'
+import DropzoneComponent from './DropzoneComponent'
 
 const App: FC = () => (<DropzoneComponent />)
 
