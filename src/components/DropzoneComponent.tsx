@@ -141,12 +141,13 @@ const DropzoneComponent: FC = () => {
       <div className={cn('body')}>
         <div {...dropzoneProps}>
           <span className={defaultClassNames.inputLabel} style={{ cursor: 'unset' }}>
-            <SortableListComponent
-              axis={state.axis}
-              items={state.files}
-              onSortEnd={handleSortEnd} />
-
-            {state.files.length === 0 && <span className="dropzone-text">Drag Files</span>}
+            {state.files.length == 0 && <div className="dropzone-text">
+              <div>Drag Files</div>
+              <div className="dropzone-subtext">(jpeg, png, pdf)</div>
+            </div>}
+            {state.files.length >= 1 && <SortableListComponent axis={state.axis}
+                                                               items={state.files}
+                                                               onSortEnd={handleSortEnd} />}
           </span>
         </div>
       </div>
@@ -227,27 +228,29 @@ const SortableListComponent: FC<ISortableListProps> = ({ axis, items, onSortEnd 
       <li className={classNames(cn('file'), cn(`file--axis-${axis}`))}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
-        <div className={cn('file', 'sort-index')}>
+        <span className={cn('file', 'sort-index')}>
           Page {sortIndex + 1}
-        </div>
+        </span>
 
-        <div className={cn('file', 'thumbnail')}>
+        <span className={cn('file', 'thumbnail')}>
           {preview}
-        </div>
+        </span>
 
-        <div className={cn('file', 'meta-name')}>
+        <span className={cn('file', 'meta-name')}>
           {meta.name}
-        </div>
+        </span>
 
-        <div className={cn('file', 'meta-size')}>
+        <span className={cn('file', 'meta-size')}>
           {filesize(meta.size)}
-        </div>
+        </span>
 
-        <a className={cn('file', 'remove-btn')}
-           style={{ display: hover ? 'block' : 'none' }}
-           onClick={elem.remove}>
-          <i className="fa fa-lg fa-times-circle"></i>
-        </a>
+        <span className={cn('file', 'remove')}>
+          <a className={cn('file', 'remove-btn')}
+             style={{ display: hover ? 'block' : 'none' }}
+             onClick={elem.remove}>
+            <i className="fa fa-lg fa-times-circle"></i>
+          </a>
+        </span>
       </li>
     )
   })

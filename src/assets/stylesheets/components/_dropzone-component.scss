@@ -43,7 +43,7 @@
     .dzu-dropzone {
       $dropzone-height: 400px;
 
-      background: $gray-500;
+      background: #ededed;
       height: $dropzone-height;
       max-height: $dropzone-height;
       overflow-x: hidden;
@@ -54,6 +54,23 @@
         font-size: 40px;
         font-weight: 300;
       }
+
+      .dropzone-subtext {
+        text-align: center;
+        font-size: 16px;
+        margin-top: 16px;
+      }
+    }
+
+    .dzu-inputLabel {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, $gray-500 1px, transparent 1px),
+        linear-gradient(to bottom, $gray-500 1px, transparent 1px);
+    }
+
+    .dzu-dropzoneActive {
+      border: 2px solid #d9d9d9;
     }
   }
 
@@ -76,7 +93,7 @@
     width: 100%;
 
     &--axis-xy {
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: row;
       flex-flow: wrap;
     }
@@ -88,11 +105,17 @@
     }
   }
 
+  @mixin truncate-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
   &__file {
     $self: &;
-    $m: 15;
 
-    background: lighten($gray-500, 7%);
+    background: #fff;
     border-radius: 3px;
     border: 4px solid white;
     box-sizing: border-box;
@@ -101,24 +124,33 @@
     display: flex;
     font-size: 16px;
     font-weight: normal;
-    height: 11.5px * $m;
+    height: 180px;
     position: relative;
     user-select: none;
-    width: 8px * $m;
+    width: 140px;
+
+    &:hover {
+      background: lighten($gray-500, 7%);
+    }
 
     &--grabbing {
       background: $green-500;
       border-color: $green-500;
+
+      .dropzone-component__file__remove-btn {
+        display: none !important;
+      }
     }
 
     &--axis-xy {
-      margin: 0 10px 10px 0;
+      margin: 0 30px 30px 0;
 
       #{$self}__remove-btn {
         cursor: pointer;
         position: absolute;
         top: 5px;
         right: 5px;
+        z-index: 1;
 
         i {
           font-size: 1.5rem;
@@ -148,8 +180,10 @@
       }
 
       #{$self}__meta-name {
+        @include truncate-text;
         bottom: 0;
-        left:0;
+        font-size: 12px;
+        left: 0;
         position: absolute;
       }
 
@@ -161,7 +195,6 @@
 
     &--axis-y {
       align-items: center;
-      justify-content: space-between;
       margin-bottom: 10px;
       height: 50px;
       width: 100%;
@@ -169,14 +202,6 @@
 
       &:last-child {
         margin-bottom: 0;
-      }
-
-      #{$self}__remove-btn {
-        cursor: pointer;
-
-        i {
-          font-size: 1.5rem;
-        }
       }
 
       #{$self}__thumbnail {
@@ -191,6 +216,38 @@
           display: block;
           height: 100%;
           max-width: 100%;
+        }
+      }
+
+      #{$self}__thumbnail {
+        display: none;
+      }
+
+      #{$self}__sort-index {
+        margin-right: 10%;
+        width: 10%;
+      }
+
+      #{$self}__meta-name {
+        @include truncate-text;
+        margin-right: 10%;
+        width: 30%;
+      }
+
+      #{$self}__meta-size {
+        width: 20%;
+      }
+
+      #{$self}__remove {
+        position: absolute;
+        right: 15px;
+      }
+
+      #{$self}__remove-btn {
+        cursor: pointer;
+
+        i {
+          font-size: 1.5rem;
         }
       }
     }

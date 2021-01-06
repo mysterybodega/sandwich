@@ -1,3 +1,18 @@
+# 0.2.4 (2021-01-06)
+
+* Fix remove file button.
+* Enlarge dropzone when there are no files.
+* Remove blue border from active dropzone.
+* Left align file names in list view.
+* Add hover state to each file.
+* Truncate long file names.
+* Use smaller font size for file names in icon view.
+* Hide remove button when dragging.
+* Add padding to icon view files.
+* Add CSS grid background to dropzone.
+* Add sub-title to drop zone to include accepted file types.
+* Upgrade packages and fix warnings.
+
 # 0.2.3 (2020-09-12)
 
 ## New Features
