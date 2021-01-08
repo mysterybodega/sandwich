@@ -10,6 +10,12 @@ More platforms will be added in the future.
 
 ![Sandwich Beta Screenshot v0.2.4](images/screenshot-v0.2.4.png)
 
+## Roadmap to v1.0.0
+
+- [ ] Automatic updates: https://www.electronforge.io/advanced/auto-update
+- [ ] Code signing: https://www.electronjs.org/docs/tutorial/code-signing#electron-forge
+- [ ] Windows & Linux support
+
 ## Development Commands
 
 | Command      | Description                    |
