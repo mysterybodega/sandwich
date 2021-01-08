@@ -9,3 +9,12 @@ Sandwich Beta is currently only supported on Mac OS X (Darwin x64).
 More platforms will be added in the future.
 
 ![Sandwich Beta Screenshot v0.2.4](images/screenshot-v0.2.4.png)
+
+## Development Commands
+
+| Command      | Description                    |
+| ------------ | ------------------------------ |
+| yarn install | Install dependencies           |
+| yarn start   | Start development server       |
+| yarn test    | Run test suite                 |
+| yarn make    | Compile app to ./out directory |
