@@ -1,5 +1,5 @@
 import FileType from './FileType'
-import { PDFDocument } from 'pdf-lib'
+import { PageSizes, PDFDocument } from 'pdf-lib'
 import { readFileSync } from 'fs'
 
 type AddFileToPDFDocument = (pdfDoc: PDFDocument, file: File) => Promise<PDFDocument>
@@ -42,7 +42,7 @@ const addImageToPDFDocument: AddFileToPDFDocument = async (pdfDoc, file) => {
   const fileBuffer = readFileSync(file.path)
 
   if (file.type === FileType.JPEG || file.type === FileType.PNG) {
-    page = pdfDoc.addPage()
+    page = pdfDoc.addPage(PageSizes.Letter)
   }
 
   switch(file.type) {
@@ -59,10 +59,14 @@ const addImageToPDFDocument: AddFileToPDFDocument = async (pdfDoc, file) => {
   if (page && image) {
     const ratio = image.height / image.width
     const padding = 10
-    const width = page.getWidth() - padding
+    const pageHeight = page.getHeight()
+    const pageWidth = page.getWidth()
+
+    const width = pageWidth - padding
     const height = width * ratio - padding
+
     const x = padding / 2
-    const y = padding / 2
+    const y = Math.floor((pageHeight - height) / 2);
 
     page.drawImage(image, { width, height, x, y })
   }

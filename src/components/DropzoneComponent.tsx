@@ -17,6 +17,7 @@ import {
 import classNames from 'classnames'
 import filesize from 'filesize'
 import fs from 'fs'
+import moment from 'moment'
 import { remote } from 'electron'
 
 import FileType from '../lib/FileType'
@@ -73,11 +74,12 @@ const DropzoneComponent: FC = () => {
       return
     }
 
+    const defaultPath = `Sandwich - ${moment().format('ll - X')}.pdf`
     const { filePath } = await remote.dialog.showSaveDialog(
       remote.getCurrentWindow(),
       {
-        defaultPath : 'sandwich.pdf',
-        buttonLabel : 'Save PDF',
+        defaultPath,
+        buttonLabel: 'Save PDF',
         filters: [{ name: 'PDFs', extensions: ['pdf'] }]
       }
     )

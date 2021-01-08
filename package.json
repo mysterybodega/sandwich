@@ -1,7 +1,7 @@
 {
   "name": "sandwich-beta",
   "productName": "Sandwich Beta",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Sandwich is an Electron app for combining PDFs and images together.",
   "main": ".webpack/main",
   "scripts": {
@@ -109,6 +109,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "filesize": "^6.1.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.29.1",
     "normalize.css": "^8.0.1",
     "pdf-lib": "^1.14.1",
     "prop-types": "^15.5.7",

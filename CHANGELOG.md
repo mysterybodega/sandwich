@@ -1,3 +1,9 @@
+# 0.2.5 (2021-01-07)
+
+* Add date and Unix timestamp to the output PDF filename.
+* Center images in final output PDF.
+* Add images as letter sized pages.
+
 # 0.2.4 (2021-01-06)
 
 * Fix remove file button.
