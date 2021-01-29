@@ -105,6 +105,7 @@
     "webpack": "^4.44.1"
   },
   "dependencies": {
+    "@exponent/electron-cookies": "^2.0.0",
     "classnames": "^2.2.6",
     "electron-squirrel-startup": "^1.0.0",
     "filesize": "^6.1.0",
